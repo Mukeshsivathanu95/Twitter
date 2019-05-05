@@ -1,0 +1,21 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Update User information</title>
+</head>
+<body>
+USERNAME:<br/>{{ mytwitter.name }}<br/>
+<br/>PROFILE INFO:<br/>{{ mytwitter.profile }}<br/>
+<br/>TWEET:<br/><br/>
+{% for k in third %}
+<form method="post" action="/update/{{ mytwitter.name }}">
+<input type="text" name="users_name" value="{{ k }}"/>
+<input type="hidden" value="{{ loop.index }}" name="index"/>
+<input type="submit" value="Edit" name="button"/>
+<br/>
+<input type="submit" name="button" value="delete"/></form>
+<br/>
+{% endfor %}
+<br/><a href='/'>HOME</a>
+</body>
+</html>
