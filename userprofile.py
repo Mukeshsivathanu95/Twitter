@@ -21,7 +21,17 @@ class UserProfile(webapp2.RequestHandler):
             for j in reversed(i.tweets):
                 third.append(j)
         third = third[:50]
-        template_values={'query':query,'third':third}
+        list1=0
+        list2=0
+        key = users.get_current_user().email()
+        mytwitter_key = ndb.Key('MyTwitter', key)
+        mytwitter = mytwitter_key.get()
+        if mytwitter!=None:
+            for i in mytwitter.followers:
+                    list1=list1+1
+            for j in mytwitter.following:
+                    list2=list2+1
+        template_values={'query':query,'third':third,'list1':list1,'list2':list2}
         template=JINJA_ENVIRONMENT.get_template('userprofile.html')
         self.response.write(template.render(template_values))
     def post(self,id):
@@ -37,27 +47,27 @@ class UserProfile(webapp2.RequestHandler):
             keys=i.key.id()
         action=self.request.get('button')
         if action == 'FOLLOW':
-                mytwitter_key = ndb.Key('MyTwitter', keys)
-                mytwitter = mytwitter_key.get()
-                profilename=mytwitter.name
-                if name==mytwitter.name:
+                mytwitter_keys = ndb.Key('MyTwitter', keys)
+                mytwitters = mytwitter_keys.get()
+                profilename=mytwitters.name
+                if name==mytwitters.name:
                         self.redirect('/userprofile/%s'%(click))
                 else:
-                    if name in mytwitter.followers:
+                    if name in mytwitters.followers:
                             self.redirect('/userprofile/%s'%(click))
                     else:
-                            mytwitter.followers.append(name)
+                            mytwitters.followers.append(name)
                             mytwitter.following.append(profilename)
                             mytwitter.put()
-                            mytwitter.put()
+                            mytwitters.put()
                             self.redirect('/userprofile/%s'%(click))
         if action == 'UNFOLLOW':
-            mytwitter_key = ndb.Key('MyTwitter', keys)
-            mytwitter = mytwitter_key.get()
-            profilename=mytwitter.name
-            if name in mytwitter.followers:
-                mytwitter.followers.remove(name)
-                mytwitter.put()
+            mytwitter_keys = ndb.Key('MyTwitter', keys)
+            mytwitters = mytwitter_keys.get()
+            profilename=mytwitters.name
+            if name in mytwitters.followers:
+                mytwitters.followers.remove(name)
+                mytwitters.put()
                 if profilename in mytwitter.following:
                     mytwitter.following.remove(profilename)
                     mytwitter.put()

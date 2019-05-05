@@ -45,8 +45,6 @@ class Edit(webapp2.RequestHandler):
             url_string = 'login'
 
         template_values = {'url' : url,'url_string' : url_string,'user' : user,'mytwitter' : mytwitter,'first':first}
-        template = JINJA_ENVIRONMENT.get_template('edit.html')
-        self.response.write(template.render(template_values))
 
     def post(self):
         key = users.get_current_user().email()
@@ -57,7 +55,7 @@ class Edit(webapp2.RequestHandler):
         name=mytwitter.name
         action=self.request.get('button')
         if action == 'Submit':
-            tweets=self.request.get('tweets')
+            tweets=self.request.get('tweet')
             mytwitter.tweets.append(tweets)
             m.alltweets.append(tweets)
             m.uname.append(name)

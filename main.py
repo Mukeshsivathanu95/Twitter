@@ -53,10 +53,12 @@ class MainPage(webapp2.RequestHandler):
                 if i.name==name:
                     first=first+1
                     lastman=name
+        z=[]
         if action=='FindTweet':
             for i in query:
                 for j in i.tweets:
                     if findtweet in j:
+                        z.append(i.name)
                         second=second+1
                         list3.append(j)
         list1=0
@@ -78,9 +80,9 @@ class MainPage(webapp2.RequestHandler):
             for j in reversed(module.uname):
                 tweetname.append(j)
             tweetname=tweetname[:50]
-        tweetfunction = map(' --> '.join,zip(tweetname,tweetlist))
-
-        template_values = {'url' : url,'url_string' : url_string,'user' : user,'welcome' : welcome,'mytwitter' : mytwitter,'first':first,'lastman':lastman,'second':second,'list3':list3,'list1':list1,'list2':list2,'tweetfunction':tweetfunction}
+        tweetz=zip(tweetname,tweetlist)
+        www=zip(z,list3)
+        template_values = {'url' : url,'url_string' : url_string,'user' : user,'welcome' : welcome,'mytwitter' : mytwitter,'first':first,'lastman':lastman,'second':second,'list3':list3,'list1':list1,'list2':list2,'tweetz':tweetz,"www":www}
         template = JINJA_ENVIRONMENT.get_template('main.html')
         self.response.write(template.render(template_values))
 

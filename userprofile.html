@@ -3,10 +3,12 @@
 <meta charset="utf-8"/>
 <title>Update information</title>
 </head>
-<body>
+<body style="background-color:powderblue;">
 {% for i in query %}
 NAME:<br/>{{ i.name }}<br/>
 <br/>PROFILE INFO:<br/>{{ i.profile }}<br/>
+Followers:{{ list1 }}<br/>
+Following:{{ list2 }}<br/>
 <form method='post' action='/userprofile/{{ i.name }}'>
 <br/><input type='submit' name='button' value='FOLLOW'/>
 <input type='submit' name='button' value='UNFOLLOW'/>

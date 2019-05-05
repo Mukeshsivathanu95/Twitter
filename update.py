@@ -18,10 +18,10 @@ class Update(webapp2.RequestHandler):
         key = users.get_current_user().email()
         mytwitter_key = ndb.Key('MyTwitter', key)
         mytwitter = mytwitter_key.get()
-        third=mytwitter.tweet
+        third=mytwitter.tweets
         third=third[::-1]
         template_values={'mytwitter':mytwitter,'third':third}
-        template=JINJA_ENVIRONMENT.get_template('edit.html')
+        template=JINJA_ENVIRONMENT.get_template('update.html')
         self.response.write(template.render(template_values))
     def post(self,id):
         action = self.request.get('button')
@@ -37,12 +37,12 @@ class Update(webapp2.RequestHandler):
             third=third[::-1]
             del third[int(self.request.get('index')) - 1]
             third=third[::-1]
-            mytwitter.tweets=l
+            mytwitter.tweets=third
             mytwitter.put()
             tweetword=self.request.get('users_name')
             master.alltweets.remove(tweetword)
             master.put()
-            self.redirect('/edit/%s'%(click))
+            self.redirect('/')
         if action=='Edit':
             tweetword=self.request.get('users_name')
             fourth=mytwitter.tweets
@@ -52,7 +52,7 @@ class Update(webapp2.RequestHandler):
             third=third[::-1]
             third[int(self.request.get('index'))-1]=self.request.get('users_name')
             third=third[::-1]
-            mytwitter.tweets=l
+            mytwitter.tweets=third
             mytwitter.put()
             master.alltweets[master.alltweets.index(tweetword1)]=tweetword
             master.put()
